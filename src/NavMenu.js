@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Menu } from 'semantic-ui-react';
 
+import InputView from './components/InputView';
+
 class NavMenu extends Component {
   constructor() {
     super();
@@ -20,26 +22,32 @@ class NavMenu extends Component {
     const { activeItem } = this.state;
 
     return (
-      <Menu
-        widths={3}
-        compact
-        size={"large"}
-      >
-        <Menu.Item
-          name="Grade"
-          active={ activeItem === 'Grade' }
-          onClick={ this.onTabClick }
+      <div>
+        <Menu
+          widths={3}
+          compact
+          size={"large"}
+          color={"blue"}
+          pointing
         >
-          Grade
-        </Menu.Item>
-        <Menu.Item
-          name="GPA"
-          active={ activeItem === 'GPA' }
-          onClick={ this.onTabClick }
-        >
-          GPA
-        </Menu.Item>
-      </Menu>
+          <Menu.Item
+            name="Grade"
+            active={ activeItem === 'Grade' }
+            onClick={ this.onTabClick }
+          >
+            Grade
+          </Menu.Item>
+          <Menu.Item
+            name="GPA"
+            active={ activeItem === 'GPA' }
+            onClick={ this.onTabClick }
+          >
+            GPA
+          </Menu.Item>
+        </Menu>
+        <InputView tab={ this.state.activeItem } />
+      </div>
+
     );
   }
 }
