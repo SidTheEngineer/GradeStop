@@ -27,7 +27,7 @@ class NavMenu extends Component {
           widths={3}
           compact
           size={"large"}
-          color={"blue"}
+          color={"purple"}
           pointing
         >
           <Menu.Item
@@ -45,7 +45,7 @@ class NavMenu extends Component {
             GPA
           </Menu.Item>
         </Menu>
-        <InputView tab={ this.state.activeItem } />
+        <InputView activeTab={ this.state.activeItem }>This is the { this.state.activeItem } tab</InputView>
       </div>
 
     );
