@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "aphrodite": "^1.2.3",
+    "express": "^4.15.3",
     "react": "^15.6.1",
     "react-animations": "^0.1.0",
     "react-dom": "^15.6.1",

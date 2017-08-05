@@ -1,7 +1,17 @@
 import React, { Component } from 'react';
-import { Menu } from 'semantic-ui-react';
+import { Menu, Header } from 'semantic-ui-react';
+import { StyleSheet, css } from 'aphrodite';
 
-import InputView from './components/InputView';
+import InputView from '../components/InputView';
+
+const styles = StyleSheet.create({
+  navMenu: {
+    position: 'absolute',
+    height: '100%',
+    width: '100%',
+    backgroundColor: 'rgb(50, 50, 50)'
+  }
+});
 
 class NavMenu extends Component {
   constructor() {
@@ -22,32 +32,34 @@ class NavMenu extends Component {
     const { activeItem } = this.state;
 
     return (
-      <div>
+      <div className={css(styles.navMenu)}>
         <Menu
           widths={3}
           compact
-          size={"large"}
-          color={"purple"}
+          size="large"
+          color="teal"
+          fixed="top"
           pointing
+          inverted
         >
           <Menu.Item
             name="Grade"
             active={ activeItem === 'Grade' }
             onClick={ this.onTabClick }
           >
-            Grade
+
+            <h3>Grade</h3>
           </Menu.Item>
           <Menu.Item
             name="GPA"
             active={ activeItem === 'GPA' }
             onClick={ this.onTabClick }
           >
-            GPA
+            <h3>GPA</h3>
           </Menu.Item>
         </Menu>
-        <InputView activeTab={ this.state.activeItem }>This is the { this.state.activeItem } tab</InputView>
+        <InputView activeTab={ this.state.activeItem }>Calculate { this.state.activeItem }</InputView>
       </div>
-
     );
   }
 }
