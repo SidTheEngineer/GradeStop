@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import { Menu } from 'semantic-ui-react';
 import { StyleSheet, css } from 'aphrodite';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { EventEmitter } from 'events';
 import COLORS from '../constants/colors';
 import InputView from '../components/InputView';
+
+// TODO: Get react router set up (learn about RR v4
 
 const styles = StyleSheet.create({
   navMenu: {
@@ -22,6 +26,10 @@ class NavMenu extends Component {
 
     this.onTabClick = this.onTabClick.bind(this);
   }
+  
+  componentWillMount() {
+    this.emitter = new EventEmitter();
+  }
 
   onTabClick(e, { name }) {
     this.setState({ activeItem: name });
@@ -31,34 +39,41 @@ class NavMenu extends Component {
     const { activeItem } = this.state;
 
     return (
-      <div className={css(styles.navMenu)}>
-        <Menu
-          widths={3}
-          compact
-          size="large"
-          color="teal"
-          fixed="top"
-          pointing
-          inverted
-        >
-          <Menu.Item
-            name="Grade"
-            active={ activeItem === 'Grade' }
-            onClick={ this.onTabClick }
+      <Router>
+        <div className={css(styles.navMenu)}>
+          <Menu
+            widths={3}
+            compact
+            size="large"
+            color={COLORS.PRIMARY}
+            fixed="top"
+            pointing
+            inverted
           >
+            <Menu.Item
+              name="Grade"
+              active={ activeItem === 'Grade' }
+              onClick={ this.onTabClick }
+            >
 
-            <h3>Grade</h3>
-          </Menu.Item>
-          <Menu.Item
-            name="GPA"
-            active={ activeItem === 'GPA' }
-            onClick={ this.onTabClick }
+              <h3>Grade</h3>
+            </Menu.Item>
+            <Menu.Item
+              name="GPA"
+              active={ activeItem === 'GPA' }
+              onClick={ this.onTabClick }
+            >
+              <h3>GPA</h3>
+            </Menu.Item>
+          </Menu>
+          <InputView
+            activeTab={ this.state.activeItem }
+            emitter={this.emitter}
           >
-            <h3>GPA</h3>
-          </Menu.Item>
-        </Menu>
-        <InputView activeTab={ this.state.activeItem }>Calculate { this.state.activeItem }</InputView>
-      </div>
+            Calculate { this.state.activeItem }
+          </InputView>
+        </div>
+      </Router>
     );
   }
 }

@@ -5,7 +5,8 @@ const COLORS = {
   GRAY_4: 'rgb(65, 65, 65)',
   GRAY_5: 'rgb(80, 80, 80)',
   GRAY_6: 'rgb(95, 95, 95)',
-  GRAY_7: 'rgb(110, 110, 110)'
+  GRAY_7: 'rgb(110, 110, 110)',
+  PRIMARY: 'purple'
 };
 
 export default COLORS;

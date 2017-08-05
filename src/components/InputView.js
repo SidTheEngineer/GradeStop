@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, css } from 'aphrodite';
 import {
   Segment,
@@ -9,35 +9,48 @@ import COLORS from '../constants/colors';
 import GradeInput from './GradeInput';
 import Controls from './Controls';
 
-const InputView = props => {
-  return (
-    <Container className={css(styles.container)}>
+class InputView extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      entryFields: [Date.now()]
+    };
+
+    this.addEntryField = this.addEntryField.bind(this);
+    this.removeEntryField = this.removeEntryField.bind(this);
+  }
+
+  addEntryField() {
+    this.setState({ entryFields: this.state.entryFields.concat([Date.now()]) });
+  }
+
+  removeEntryField() {
+    this.setState({ entryFields: this.state.entryFields.slice(0, -1) });
+  }
+
+  componentWillMount() {
+    this.props.emitter.addListener('addEntryField', this.addEntryField);
+    this.props.emitter.addListener('removeEntryField', this.removeEntryField);
+  }
+
+  render() {
+    return (
+      <Container className={css(styles.container)}>
         <Segment
           className={css(styles.segment)}
           raised
           size="big"
         >
           <Header as="h1" className={css(styles.header)}>
-            { props.children }
+            { this.props.children }
           </Header>
-          <GradeInput />
-          <GradeInput />
-          <GradeInput />
-          <GradeInput />
-          <GradeInput />
-          <GradeInput />
-          <GradeInput />
-          <GradeInput />
-          <GradeInput />
-          <GradeInput />
-          <GradeInput />
-          <GradeInput />
-          <GradeInput />
-          <GradeInput />
+        {this.state.entryFields.map(d => <GradeInput key={d} />)}
         </Segment>
-        <Controls />
-    </Container>
-  );
+        <Controls emitter={this.props.emitter} />
+      </Container>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -48,7 +61,7 @@ const styles = StyleSheet.create({
     paddingBottom: '80px'
   },
   header: {
-    color: COLORS.GRAY_7,
+    color: 'white',
     textAlign: 'center'
   },
   segment: {
