@@ -5,7 +5,7 @@ import {
   Container,
   Header
 } from 'semantic-ui-react';
-
+import COLORS from '../constants/colors';
 import GradeInput from './GradeInput';
 import Controls from './Controls';
 
@@ -28,6 +28,12 @@ const InputView = props => {
           <GradeInput />
           <GradeInput />
           <GradeInput />
+          <GradeInput />
+          <GradeInput />
+          <GradeInput />
+          <GradeInput />
+          <GradeInput />
+          <GradeInput />
         </Segment>
         <Controls />
     </Container>
@@ -38,12 +44,16 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: '80px',
     width: '80%',
+    minHeight: '100%',
+    paddingBottom: '80px'
   },
   header: {
-    color: 'white'
+    color: COLORS.GRAY_7,
+    textAlign: 'center'
   },
   segment: {
-    backgroundColor: 'rgb(70, 70, 70)'
+    backgroundColor: COLORS.GRAY_2,
+    margin: '0'
   }
 });
 

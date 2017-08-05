@@ -1,3 +1,10 @@
-html, body {
+html, body, #root, .App {
   height: 100%;
+}
+
+*:focus { -webkit-appearance: none; }
+
+input[type=text], .input-label {
+  background-color: rgb(35, 35, 35) !important;
+  color: rgb(140, 140, 140) !important;
 }

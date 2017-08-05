@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
-import { Menu, Header } from 'semantic-ui-react';
+import { Menu } from 'semantic-ui-react';
 import { StyleSheet, css } from 'aphrodite';
-
+import COLORS from '../constants/colors';
 import InputView from '../components/InputView';
 
 const styles = StyleSheet.create({
   navMenu: {
-    position: 'absolute',
-    height: '100%',
     width: '100%',
-    backgroundColor: 'rgb(50, 50, 50)'
+    minHeight: '100%',
+    backgroundColor: COLORS.GRAY_1
   }
 });
 
