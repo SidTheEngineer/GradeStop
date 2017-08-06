@@ -4,9 +4,15 @@ html, body, #root, .App {
 
 *:focus { -webkit-appearance: none; }
 
-h1, h2, h3, input { font-family: 'Asap Condensed', sans-serif !important; }
+h1, h2, h3, input, .dropdown { font-family: 'Asap Condensed', sans-serif !important; }
 
 input[type=number], .dropdown {
   background-color: rgb(35, 35, 35) !important;
   color: rgb(140, 140, 140) !important;
+}
+
+.dropdown {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-between !important;
 }

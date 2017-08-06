@@ -5,7 +5,7 @@ import {
   Container,
   Header
 } from 'semantic-ui-react';
-import { bounceIn } from 'react-animations';
+import { pulse } from 'react-animations';
 import COLORS from '../constants/colors';
 import Controls from './Controls';
 
@@ -23,8 +23,8 @@ const styles = StyleSheet.create({
   segment: {
     backgroundColor: COLORS.GRAY_2,
     margin: '0',
-    animationName: bounceIn,
-    animationDuration: '0.6s'
+    animationName: pulse,
+    animationDuration: '0.35s'
   }
 });
 

@@ -19,7 +19,8 @@ const GPAInput = () => (
       className={ css(styles.input) }
       placeholder="Grade"
       fluid 
-      selection 
+      selection
+      icon="caret down"
       options={ GRADE_OPTIONS }
     />
     <Input
