@@ -1,5 +1,6 @@
 const GRADE_OPTIONS = [
   { key: 'A', text: 'A', value: 'A' },
+  { key: 'A-', text: 'A-', value: 'A-' },
   { key: 'B+', text: 'B+', value: 'B+' },
   { key: 'B', text: 'B', value: 'B' },
   { key: 'B-', text: 'B-', value: 'B-' },
