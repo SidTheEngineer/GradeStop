@@ -6,7 +6,7 @@ html, body, #root, .App {
 
 h1, h2, h3, input { font-family: 'Asap Condensed', sans-serif !important; }
 
-input[type=text], .input-label {
+input[type=number], .dropdown {
   background-color: rgb(35, 35, 35) !important;
   color: rgb(140, 140, 140) !important;
 }

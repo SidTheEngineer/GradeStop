@@ -24,22 +24,33 @@ class Controls extends Component {
   constructor(props) {
     super(props);
 
-    this.emitAddEntryField = this.emitAddEntryField.bind(this);
-    this.emitRemoveEntryField = this.emitRemoveEntryField.bind(this);
-    this.emitSubmitEntryFields = this.emitSubmitEntryFields.bind(this);
+    this.emitAddInput = this.emitAddInput.bind(this);
+    this.emitRemoveInput = this.emitRemoveInput.bind(this);
+    this.emitSubmitInputs = this.emitSubmitInputs.bind(this);
   }
 
-  emitAddEntryField() {
-    this.props.emitter.emit('addEntryField');
+  emitAddInput() {
+    switch (this.props.activeTab) {
+      case 'Grade':
+        this.props.emitter.emit('addGradeInput');
+        break;
+      default:
+        this.props.emitter.emit('addGpaInput');
+    }
     window.scrollTo(0, document.body.scrollHeight);
   }
 
-  emitRemoveEntryField() {
-    this.props.emitter.emit('removeEntryField');
+  emitRemoveInput() {
+    switch (this.props.activeTab) {
+      case 'Grade':
+        this.props.emitter.emit('removeGradeInput');
+        break;
+      default:
+        this.props.emitter.emit('removeGpaInput');
+    }
   }
 
-
-  emitSubmitEntryFields() {
+  emitSubmitInputs() {
     // TODO: Pub event
     console.log("Entry fields submitted");
   }
@@ -53,7 +64,7 @@ class Controls extends Component {
           className={css(styles.button)} 
           fluid 
           color="black"
-          onClick={ this.emitRemoveEntryField }
+          onClick={ this.emitRemoveInput }
         />
         <Button
           icon="checkmark"
@@ -61,7 +72,7 @@ class Controls extends Component {
           className={css(styles.button)} 
           fluid 
           color={COLORS.PRIMARY}
-          onClick={ this.emitSubmitEntryFields }
+          onClick={ this.emitSubmitInputs }
         />
         <Button 
           icon="plus" 
@@ -69,7 +80,7 @@ class Controls extends Component {
           className={css(styles.button)} 
           fluid 
           color="black"
-          onClick={ this.emitAddEntryField }
+          onClick={ this.emitAddInput }
         />
       </div>
     );

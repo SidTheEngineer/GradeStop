@@ -1,7 +1,8 @@
 import React from 'react';
-import { Input, Label } from 'semantic-ui-react';
+import { Dropdown, Input } from 'semantic-ui-react';
 import { StyleSheet, css } from 'aphrodite';
 import InputContainer from './InputContainer';
+import GRADE_OPTIONS from '../constants/grades';
 import COLORS from '../constants/colors';
 
 const styles = StyleSheet.create({
@@ -12,29 +13,25 @@ const styles = StyleSheet.create({
   }
 });
 
-const GradeInput = () => (
+const GPAInput = () => (
   <InputContainer>
-    <Input
-      className={css(styles.input)}
+    <Dropdown
+      className={ css(styles.input) }
       placeholder="Grade"
-      size="small"
-      type="number"
-      fluid
-    >
-      <input />
-      <Label color="black" size="mini" attached="top right">%</Label>
-    </Input>
+      fluid 
+      selection 
+      options={ GRADE_OPTIONS }
+    />
     <Input
       className={css(styles.input)}
-      placeholder="Weight"
+      placeholder="Credits"
       size="small"
       type="number"
       fluid
     >
       <input />
-      <Label color="black" size="mini" attached="top right">%</Label>
     </Input>
   </InputContainer>
 );
 
-export default GradeInput;
+export default GPAInput;
