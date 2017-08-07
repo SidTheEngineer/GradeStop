@@ -9,6 +9,7 @@ import GPAView from '../components/GPAView';
 import GPAInput from '../components/GPAInput';
 
 // TODO: Get react router set up (learn about RR v4
+// TODO: Preserve inputs
 
 const styles = StyleSheet.create({
   navMenu: {
