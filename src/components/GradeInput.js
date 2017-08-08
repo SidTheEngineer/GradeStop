@@ -12,16 +12,14 @@ const styles = StyleSheet.create({
   }
 });
 
-let _state = {
-  currentGrade: "",
-  currentWeight: ""
-};
-
 class GradeInput extends Component {
   constructor() {
     super();
 
-    this.state = _state
+    this.state = {
+      currentGrade: "",
+      currentWeight: ""
+    }
 
     this.updateCurrentGrade = this.updateCurrentGrade.bind(this);
     this.updateCurrentWeight = this.updateCurrentWeight.bind(this);
@@ -33,17 +31,6 @@ class GradeInput extends Component {
 
   updateCurrentWeight (e, data) {
     this.setState({ currentWeight: data.value });
-  }
-
-  componentWillUnmount() {
-    _state = this.state;
-  }
-
-  componentDidMount() {
-    _state = {
-      currentGrade: "",
-      currentWeight: ""
-    }
   }
 
   render() {

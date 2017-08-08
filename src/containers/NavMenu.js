@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Menu } from 'semantic-ui-react';
 import { StyleSheet, css } from 'aphrodite';
 import { BrowserRouter as Router } from 'react-router-dom';
+import _ from 'lodash';
 import COLORS from '../constants/colors';
 import GradeView from '../components/GradeView';
 import GradeInput from '../components/GradeInput';
@@ -25,8 +26,8 @@ class NavMenu extends Component {
 
     this.state = {
       activeTab: 'Grade',
-      gradeInputs: [<GradeInput key={Date.now()} />],
-      gpaInputs: [<GPAInput key={Date.now()} />]
+      gradeInputs: [<GradeInput key={ _.uniqueId('key:') } />],
+      gpaInputs: [<GPAInput key={ _.uniqueId('key:') } />]
     };
 
     this.onTabClick = this.onTabClick.bind(this);
@@ -37,7 +38,7 @@ class NavMenu extends Component {
   }
 
   addGradeInput() {
-    this.setState({ gradeInputs: this.state.gradeInputs.concat([<GradeInput key={Date.now()} />]) });
+    this.setState({ gradeInputs: this.state.gradeInputs.concat([<GradeInput key={ _.uniqueId('key:') } />]) });
   }
 
   removeGradeInput() {
@@ -45,7 +46,7 @@ class NavMenu extends Component {
   }
 
   addGpaInput() {
-    this.setState({ gpaInputs: this.state.gpaInputs.concat([<GPAInput key={Date.now()} />]) });
+    this.setState({ gpaInputs: this.state.gpaInputs.concat([<GPAInput key={ _.uniqueId('key:') } />]) });
   }
 
   removeGpaInput() {
