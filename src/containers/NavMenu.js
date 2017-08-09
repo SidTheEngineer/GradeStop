@@ -1,18 +1,13 @@
 import React, { Component } from 'react';
 import { Menu } from 'semantic-ui-react';
 import { StyleSheet, css } from 'aphrodite';
-import { Route, Link } from 'react-router-dom';
+import { Route, Link, Switch } from 'react-router-dom';
 import _ from 'lodash';
 import COLORS from '../constants/colors';
 import GradeView from '../components/GradeView';
 import GradeInput from '../components/GradeInput';
 import GPAView from '../components/GPAView';
 import GPAInput from '../components/GPAInput';
-
-// TODO: Get react router set up. Use the "as" prop on Menu.Item to specify
-// that we want the menu item to be used as a Link from RR4  so as not to
-// encounter any errors. Make sure to use "exact" prop on home Route to avoid
-// triggering multiple routes and rendering multiple components at once.
 
 // TODO: Try and find a way to preserve input state (this may come with setting
 // up RR4).
@@ -22,6 +17,11 @@ const styles = StyleSheet.create({
     width: '100%',
     minHeight: '100%',
     backgroundColor: COLORS.GRAY_1
+  },
+  pageNotFound: {
+    paddingTop: '80px',
+    textAlign: 'center',
+    color: COLORS.GRAY_7
   }
 });
 
@@ -113,32 +113,37 @@ class NavMenu extends Component {
             <h3>GPA</h3>
           </Menu.Item>
         </Menu>
-        <Route exact path="/" render={
-          routeProps => {
-            return (
-              <GradeView
-                activeTab={ activeTab } 
-                emitter={ emitter } 
-                title={`Calculate ${ activeTab }`}
-                gradeInputs={ gradeInputs } 
-                { ...routeProps }
-              /> 
-            );
-          }
-        } />
-        <Route path="/gpa" render={
-          routeProps => {
-            return (
-              <GPAView 
-                activeTab={ activeTab } 
-                emitter={ emitter } 
-                title={`Calculate ${ activeTab }`} 
-                gpaInputs={ gpaInputs }
-                { ...routeProps }
-              />
-            );
-          }
-        } />
+        <Switch>
+          <Route exact path="/" render={
+            routeProps => {
+              return (
+                <GradeView
+                  activeTab={ activeTab } 
+                  emitter={ emitter } 
+                  title={`Calculate ${ activeTab }`}
+                  gradeInputs={ gradeInputs } 
+                  { ...routeProps }
+                /> 
+              );
+            }
+          } />
+          <Route exact path="/gpa" render={
+            routeProps => {
+              return (
+                <GPAView 
+                  activeTab={ activeTab } 
+                  emitter={ emitter } 
+                  title={`Calculate ${ activeTab }`} 
+                  gpaInputs={ gpaInputs }
+                  { ...routeProps }
+                />
+              );
+            }
+          } />
+          <Route render={
+            () => <h1 className={css(styles.pageNotFound)}>Page not found.</h1>
+          } />
+        </Switch>
       </div>
     );
   }
