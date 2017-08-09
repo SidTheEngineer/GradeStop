@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Menu } from 'semantic-ui-react';
 import { StyleSheet, css } from 'aphrodite';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { Route, Link } from 'react-router-dom';
 import _ from 'lodash';
 import COLORS from '../constants/colors';
 import GradeView from '../components/GradeView';
@@ -9,8 +9,13 @@ import GradeInput from '../components/GradeInput';
 import GPAView from '../components/GPAView';
 import GPAInput from '../components/GPAInput';
 
-// TODO: Get react router set up (learn about RR v4
-// TODO: Preserve inputs
+// TODO: Get react router set up. Use the "as" prop on Menu.Item to specify
+// that we want the menu item to be used as a Link from RR4  so as not to
+// encounter any errors. Make sure to use "exact" prop on home Route to avoid
+// triggering multiple routes and rendering multiple components at once.
+
+// TODO: Try and find a way to preserve input state (this may come with setting
+// up RR4).
 
 const styles = StyleSheet.create({
   navMenu: {
@@ -35,6 +40,7 @@ class NavMenu extends Component {
     this.removeGradeInput = this.removeGradeInput.bind(this);
     this.addGpaInput = this.addGpaInput.bind(this);
     this.removeGpaInput = this.removeGpaInput.bind(this);
+    this.switchView = this.switchView.bind(this);
   }
 
   addGradeInput() {
@@ -57,62 +63,83 @@ class NavMenu extends Component {
     this.setState({ activeTab: name });
   }
 
+  switchView(pathName) {
+    if (pathName === '/')
+      this.setState({ activeTab: 'Grade' });
+    else 
+      this.setState({ activeTab: 'GPA' });
+  }
+
   componentWillMount() {
     this.props.emitter.addListener('addGradeInput', this.addGradeInput);
     this.props.emitter.addListener('removeGradeInput', this.removeGradeInput);
     this.props.emitter.addListener('addGpaInput', this.addGpaInput);
     this.props.emitter.addListener('removeGpaInput', this.removeGpaInput);
+    this.props.emitter.addListener('switchView', this.switchView);
   }
 
   render() {
     const { activeTab, gradeInputs, gpaInputs } = this.state;
     const { emitter } = this.props;
 
-    const activeView = activeTab === 'Grade'
-      ? <GradeView
-          activeTab={ activeTab } 
-          emitter={ emitter } 
-          title={`Calculate ${ activeTab }`}
-          gradeInputs={ gradeInputs } 
-        /> 
-      : <GPAView 
-          activeTab={ activeTab } 
-          emitter={ emitter } 
-          title={`Calculate ${ activeTab }`} 
-          gpaInputs={ gpaInputs }
-        />
-
     return (
-      <Router>
-        <div className={css(styles.navMenu)}>
-          <Menu
-            widths={3}
-            compact
-            size="large"
-            color={COLORS.PRIMARY}
-            fixed="top"
-            pointing
-            inverted
+      <div className={css(styles.navMenu)}>
+        <Menu
+          widths={3}
+          compact
+          size="large"
+          color={COLORS.PRIMARY}
+          fixed="top"
+          pointing
+          inverted
+        >
+          <Menu.Item
+            name="Grade"
+            active={ activeTab === 'Grade' }
+            onClick={ this.onTabClick }
+            as={Link}
+            to="/"
           >
-            <Menu.Item
-              name="Grade"
-              active={ activeTab === 'Grade' }
-              onClick={ this.onTabClick }
-            >
 
-              <h3>Grade</h3>
-            </Menu.Item>
-            <Menu.Item
-              name="GPA"
-              active={ activeTab === 'GPA' }
-              onClick={ this.onTabClick }
-            >
-              <h3>GPA</h3>
-            </Menu.Item>
-          </Menu>
-          { activeView }
-        </div>
-      </Router>
+            <h3>Grade</h3>
+          </Menu.Item>
+          <Menu.Item
+            name="GPA"
+            active={ activeTab === 'GPA' }
+            onClick={ this.onTabClick }
+            as={Link}
+            to="gpa"
+          >
+            <h3>GPA</h3>
+          </Menu.Item>
+        </Menu>
+        <Route exact path="/" render={
+          routeProps => {
+            return (
+              <GradeView
+                activeTab={ activeTab } 
+                emitter={ emitter } 
+                title={`Calculate ${ activeTab }`}
+                gradeInputs={ gradeInputs } 
+                { ...routeProps }
+              /> 
+            );
+          }
+        } />
+        <Route path="/gpa" render={
+          routeProps => {
+            return (
+              <GPAView 
+                activeTab={ activeTab } 
+                emitter={ emitter } 
+                title={`Calculate ${ activeTab }`} 
+                gpaInputs={ gpaInputs }
+                { ...routeProps }
+              />
+            );
+          }
+        } />
+      </div>
     );
   }
 }

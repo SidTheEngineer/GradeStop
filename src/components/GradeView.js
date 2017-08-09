@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, css } from 'aphrodite';
 import {
   Segment,
@@ -28,20 +28,28 @@ const styles = StyleSheet.create({
   }
 });
 
-const GradeView  = props => (
-  <Container className={css(styles.container)}>
-    <Segment
-      className={css(styles.segment)}
-      raised
-      size="big"
-    >
-      <Header as="h1" className={css(styles.header)}>
-        { props.title }
-      </Header>
-    { props.gradeInputs.map(i => i) }
-    </Segment>
-    <Controls activeTab={ props.activeTab } emitter={ props.emitter } />
-  </Container>
-);
+class GradeView extends Component {
+  componentWillUnmount() {
+    this.props.emitter.emit('switchView', this.props.history.location.pathname);
+  }
+
+  render() {
+    return (
+      <Container className={css(styles.container)}>
+        <Segment
+          className={css(styles.segment)}
+          raised
+          size="big"
+        >
+          <Header as="h1" className={css(styles.header)}>
+            { this.props.title }
+          </Header>
+        { this.props.gradeInputs.map(i => i) }
+        </Segment>
+        <Controls activeTab={ this.props.activeTab } emitter={ this.props.emitter } />
+      </Container>
+    );
+  }
+}
 
 export default GradeView;
