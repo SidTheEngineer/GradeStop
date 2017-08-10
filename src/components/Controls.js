@@ -51,8 +51,13 @@ class Controls extends Component {
   }
 
   emitSubmitInputs() {
-    // TODO: Pub event
-    console.log("Entry fields submitted");
+    switch (this.props.activeTab) {
+      case 'Grade':
+        this.props.emitter.emit('submitGradeInputs');
+        break;
+      default:
+        this.props.emitter.emit('submitGpaInputs');
+    }
   }
 
   render() {
