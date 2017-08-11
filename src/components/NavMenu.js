@@ -20,7 +20,7 @@ const NavMenu = props => (
       as={ Link }
       to="/"
     >
-      <h3>Grade</h3>
+      <h3>{ TAB_NAMES.grade }</h3>
     </Menu.Item>
     <Menu.Item
       name={ TAB_NAMES.gpa }
@@ -29,7 +29,7 @@ const NavMenu = props => (
       as={ Link }
       to="gpa"
     >
-      <h3>GPA</h3>
+      <h3>{ TAB_NAMES.gpa }</h3>
     </Menu.Item>
   </Menu>
 );

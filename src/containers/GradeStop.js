@@ -72,7 +72,7 @@ class GradeStop extends Component {
     if (this.hasEmptyInputs(gradeInputs))
       this.setState({ errorModal: true });
     else {
-      
+      console.log(gradeInputs);
     }
   }
 
@@ -82,7 +82,8 @@ class GradeStop extends Component {
     if (this.hasEmptyDropdowns(gpaDropdowns) || this.hasEmptyInputs(gpaInputs))
       this.setState({ errorModal: true });
     else {
-      console.log('no empty inputs or dropdowns detected');
+      console.log(gpaDropdowns);
+      console.log(gpaInputs);
     }
   }
 
@@ -108,7 +109,7 @@ class GradeStop extends Component {
   }
 
   fetchDropdowns() {
-    return document.querySelectorAll('div.default.text');
+    return document.querySelectorAll('div.text');
   }
 
   onTabClick(e, { name }) {
