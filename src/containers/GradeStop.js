@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, css } from 'aphrodite';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import _ from 'lodash';
-import { COLORS, PLACEHOLDERS, TAB_NAMES, MESSAGES } from '../constants';
+import { COLORS, PLACEHOLDERS, TAB_NAMES, MESSAGES, GPA_GRADE_WEIGHTS } from '../constants';
 import GradeView from '../components/GradeView';
 import GradeInput from '../components/GradeInput';
 import GPAView from '../components/GPAView';
@@ -82,8 +82,8 @@ class GradeStop extends Component {
     if (this.hasEmptyDropdowns(gpaDropdowns) || this.hasEmptyInputs(gpaInputs))
       this.setState({ errorModal: true });
     else {
-      console.log(gpaDropdowns);
-      console.log(gpaInputs);
+      const gpa = this.calculateGpa(gpaDropdowns, gpaInputs);
+      console.log(gpa);
     }
   }
 
@@ -105,11 +105,25 @@ class GradeStop extends Component {
   }
 
   fetchInputs() {
-    return document.getElementsByTagName('input');
+    return Array.from(document.getElementsByTagName('input'));
   }
 
   fetchDropdowns() {
-    return document.querySelectorAll('div.text');
+    return Array.from(document.querySelectorAll('div.text'));
+  }
+
+  calculateGpa(dropdowns, inputs) {
+    let totalGradePoints = 0;
+    let totalCredits = 0;
+
+    while (dropdowns.length !== 0 && inputs.length !== 0) {
+      const grade = dropdowns.shift().textContent;
+      const credits = parseInt(inputs.shift().value, 10);
+
+      totalGradePoints += GPA_GRADE_WEIGHTS[grade] * credits;
+      totalCredits += credits;
+    }
+    return (totalGradePoints / totalCredits).toPrecision(3);
   }
 
   onTabClick(e, { name }) {

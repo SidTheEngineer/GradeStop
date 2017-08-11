@@ -2,7 +2,7 @@ import React from 'react';
 import { Dropdown, Input } from 'semantic-ui-react';
 import { StyleSheet, css } from 'aphrodite';
 import InputContainer from './InputContainer';
-import { COLORS, PLACEHOLDERS, GRADE_OPTIONS } from '../constants';
+import { COLORS, PLACEHOLDERS, DROPDOWN_GRADE_OPTIONS } from '../constants';
 
 const styles = StyleSheet.create({
   input: {
@@ -20,7 +20,7 @@ const GPAInput = () => (
       fluid 
       selection
       icon="caret down"
-      options={ GRADE_OPTIONS }
+      options={ DROPDOWN_GRADE_OPTIONS }
     />
     <Input
       className={css(styles.input)}

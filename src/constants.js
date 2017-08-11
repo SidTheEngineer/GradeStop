@@ -9,7 +9,7 @@ export const COLORS = {
   PRIMARY: 'purple'
 };
 
-export const GRADE_OPTIONS = [
+export const DROPDOWN_GRADE_OPTIONS = [
   { key: 'A', text: 'A', value: 'A' },
   { key: 'A-', text: 'A-', value: 'A-' },
   { key: 'B+', text: 'B+', value: 'B+' },
@@ -23,6 +23,21 @@ export const GRADE_OPTIONS = [
   { key: 'D-', text: 'D-', value: 'D-' },
   { key: 'F', text: 'F', value: 'F' }
 ];
+
+export const GPA_GRADE_WEIGHTS = {
+  'A': 4,
+  'A-': 3.75,
+  'B+': 3.25,
+  'B': 3,
+  'B-': 2.75,
+  'C+': 2.25,
+  'C': 2,
+  'C-': 1.75,
+  'D+': 1.25,
+  'D': 1,
+  'D-': 0.75,
+  'F': 0 
+}
 
 export const PLACEHOLDERS = {
   gradeInput: 'Grade',
