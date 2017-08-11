@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button } from 'semantic-ui-react';
 import { StyleSheet, css } from 'aphrodite';
-import COLORS from '../constants/colors';
+import { COLORS, TAB_NAMES } from '../constants';
 
 const styles = StyleSheet.create({
   controlsContainer: {
@@ -31,7 +31,7 @@ class Controls extends Component {
 
   emitAddInput() {
     switch (this.props.activeTab) {
-      case 'Grade':
+      case TAB_NAMES.grade:
         this.props.emitter.emit('addGradeInput');
         break;
       default:
@@ -42,7 +42,7 @@ class Controls extends Component {
 
   emitRemoveInput() {
     switch (this.props.activeTab) {
-      case 'Grade':
+      case TAB_NAMES.grade:
         this.props.emitter.emit('removeGradeInput');
         break;
       default:
@@ -52,7 +52,7 @@ class Controls extends Component {
 
   emitSubmitInputs() {
     switch (this.props.activeTab) {
-      case 'Grade':
+      case TAB_NAMES.grade:
         this.props.emitter.emit('submitGradeInputs');
         break;
       default:

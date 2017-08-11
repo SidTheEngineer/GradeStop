@@ -6,7 +6,7 @@ import {
   Header
 } from 'semantic-ui-react';
 import { pulse } from 'react-animations';
-import COLORS from '../constants/colors';
+import { COLORS } from '../constants';
 import Controls from './Controls';
 
 const styles = StyleSheet.create({

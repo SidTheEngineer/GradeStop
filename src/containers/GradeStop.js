@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import { Menu, Modal, Button } from 'semantic-ui-react';
 import { StyleSheet, css } from 'aphrodite';
-import { Route, Link, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import _ from 'lodash';
-import COLORS from '../constants/colors';
+import { COLORS, PLACEHOLDERS, TAB_NAMES, MESSAGES } from '../constants';
 import GradeView from '../components/GradeView';
 import GradeInput from '../components/GradeInput';
 import GPAView from '../components/GPAView';
 import GPAInput from '../components/GPAInput';
+import NavMenu from '../components/NavMenu';
+import MessageModal from '../components/MessageModal';
 
 // TODO: Start working on a way to collect all of the data within the inputs
 // to calculate grade/GPA (on the backend?)
@@ -15,11 +16,8 @@ import GPAInput from '../components/GPAInput';
 // TODO: Try and find a way to preserve input state (this may come with setting
 // up RR4).
 
-// TODO: Consider renaming this container and abstracting away the navbar
-// away to its own component (might declutter this container).
-
 const styles = StyleSheet.create({
-  navMenu: {
+  appContainer: {
     width: '100%',
     minHeight: '100%',
     backgroundColor: COLORS.GRAY_1
@@ -31,12 +29,12 @@ const styles = StyleSheet.create({
   }
 });
 
-class NavMenu extends Component {
+class GradeStop extends Component {
   constructor() {
     super();
 
     this.state = {
-      activeTab: 'Grade',
+      activeTab: TAB_NAMES.grade,
       gradeInputs: [<GradeInput key={ _.uniqueId('key:') } />],
       gpaInputs: [<GPAInput key={ _.uniqueId('key:') } />],
       errorModal: false
@@ -70,15 +68,26 @@ class NavMenu extends Component {
   }
 
   submitGradeInputs() {
-    if (this.hasEmptyInputs()) this.setState({ errorModal: true });
+    const gradeInputs = this.fetchInputs();
+    if (this.hasEmptyInputs(gradeInputs))
+      this.setState({ errorModal: true });
+    else {
+      
+    }
   }
 
   submitGpaInputs() {
-    if (this.hasEmptyDropdowns()) console.log("EMPTY DROPDOWNS DETECTED");
+    const gpaDropdowns = this.fetchDropdowns();
+    const gpaInputs = this.fetchInputs();
+    if (this.hasEmptyDropdowns(gpaDropdowns) || this.hasEmptyInputs(gpaInputs))
+      this.setState({ errorModal: true });
+    else {
+      console.log('no empty inputs or dropdowns detected');
+    }
   }
 
-  hasEmptyInputs() {
-    for (let i of document.getElementsByTagName('input')) {
+  hasEmptyInputs(inputs) {
+    for (let i of inputs) {
       if (i.value.length === 0) {
         return true;
       }
@@ -86,12 +95,20 @@ class NavMenu extends Component {
     return false;
   }
 
-  hasEmptyDropdowns() {
-    for (let d of document.querySelectorAll('div.default.text')) {
-      if (d.textContent === 'Grade')
+  hasEmptyDropdowns(dropdowns) {
+    for (let d of dropdowns) {
+      if (d.textContent === PLACEHOLDERS.gpaGradeInput)
         return true;
     }
     return false;
+  }
+
+  fetchInputs() {
+    return document.getElementsByTagName('input');
+  }
+
+  fetchDropdowns() {
+    return document.querySelectorAll('div.default.text');
   }
 
   onTabClick(e, { name }) {
@@ -100,9 +117,9 @@ class NavMenu extends Component {
 
   switchView(pathName) {
     if (pathName === '/')
-      this.setState({ activeTab: 'Grade' });
+      this.setState({ activeTab: TAB_NAMES.grade });
     else 
-      this.setState({ activeTab: 'GPA' });
+      this.setState({ activeTab: TAB_NAMES.gpa });
   }
 
   closeErrorModal() {
@@ -124,46 +141,16 @@ class NavMenu extends Component {
     const { emitter } = this.props;
 
     return (
-      <div className={css(styles.navMenu)}>
-        <Modal basic open={ this.state.errorModal } onClose={ this.closeErrorModal }>
-          <Modal.Content>
-            <h1>Make sure you've filled in all of the inputs!</h1>
-          </Modal.Content>
-          <Modal.Actions>
-            <Button onClick={ this.closeErrorModal } color="purple" inverted>
-              OK
-            </Button>
-          </Modal.Actions>
-        </Modal>
-        <Menu
-          widths={3}
-          compact
-          size="large"
-          color={COLORS.PRIMARY}
-          fixed="top"
-          pointing
-          inverted
-        >
-          <Menu.Item
-            name="Grade"
-            active={ activeTab === 'Grade' }
-            onClick={ this.onTabClick }
-            as={Link}
-            to="/"
-          >
-
-            <h3>Grade</h3>
-          </Menu.Item>
-          <Menu.Item
-            name="GPA"
-            active={ activeTab === 'GPA' }
-            onClick={ this.onTabClick }
-            as={Link}
-            to="gpa"
-          >
-            <h3>GPA</h3>
-          </Menu.Item>
-        </Menu>
+      <div className={css(styles.appContainer)}>
+        <MessageModal
+          open={ this.state.errorModal }
+          onClose={ this.closeErrorModal }
+          message={ MESSAGES.emptyInputError }
+        />
+        <NavMenu
+          onTabClick={ this.onTabClick }
+          activeTab={ activeTab }
+        />
         <Switch>
           <Route exact path="/" render={
             routeProps => {
@@ -204,4 +191,4 @@ class NavMenu extends Component {
   }
 }
 
-export default NavMenu;
+export default GradeStop;

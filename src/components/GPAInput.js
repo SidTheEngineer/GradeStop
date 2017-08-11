@@ -2,8 +2,7 @@ import React from 'react';
 import { Dropdown, Input } from 'semantic-ui-react';
 import { StyleSheet, css } from 'aphrodite';
 import InputContainer from './InputContainer';
-import GRADE_OPTIONS from '../constants/grades';
-import COLORS from '../constants/colors';
+import { COLORS, PLACEHOLDERS, GRADE_OPTIONS } from '../constants';
 
 const styles = StyleSheet.create({
   input: {
@@ -17,7 +16,7 @@ const GPAInput = () => (
   <InputContainer>
     <Dropdown
       className={ css(styles.input) }
-      placeholder="Grade"
+      placeholder={ PLACEHOLDERS.gpaGradeInput }
       fluid 
       selection
       icon="caret down"
@@ -25,7 +24,7 @@ const GPAInput = () => (
     />
     <Input
       className={css(styles.input)}
-      placeholder="Credits"
+      placeholder={ PLACEHOLDERS.gpaCreditInput }
       size="small"
       type="number"
       fluid
