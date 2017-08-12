@@ -2,16 +2,26 @@ import React, { Component } from 'react';
 import { StyleSheet, css } from 'aphrodite';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import _ from 'lodash';
-import { COLORS, PLACEHOLDERS, TAB_NAMES, MESSAGES, GPA_GRADE_WEIGHTS } from '../constants';
 import GradeView from '../components/GradeView';
 import GradeInput from '../components/GradeInput';
 import GPAView from '../components/GPAView';
 import GPAInput from '../components/GPAInput';
 import NavMenu from '../components/NavMenu';
 import MessageModal from '../components/MessageModal';
+import {
+  COLORS,
+  PLACEHOLDERS,
+  TAB_NAMES, 
+  MESSAGES, 
+  GPA_GRADE_WEIGHTS,
+} from '../constants';
 
 // TODO: Start working on a way to collect all of the data within the inputs
 // to calculate grade/GPA (on the backend?)
+
+// TODO: Error checking/input restriction throughout app.
+
+// TODO: Media queries for desktop view.
 
 // TODO: Try and find a way to preserve input state (this may come with setting
 // up RR4).
@@ -37,7 +47,9 @@ class GradeStop extends Component {
       activeTab: TAB_NAMES.grade,
       gradeInputs: [<GradeInput key={ _.uniqueId('key:') } />],
       gpaInputs: [<GPAInput key={ _.uniqueId('key:') } />],
-      errorModal: false
+      errorModal: false,
+      gpa: null,
+      grade: null
     };
 
     this.onTabClick = this.onTabClick.bind(this);
@@ -49,6 +61,7 @@ class GradeStop extends Component {
     this.submitGpaInputs = this.submitGpaInputs.bind(this);
     this.switchView = this.switchView.bind(this);
     this.closeErrorModal = this.closeErrorModal.bind(this);
+    this.showGpaResult = this.showGpaResult.bind(this);
   }
 
   addGradeInput() {
@@ -83,6 +96,7 @@ class GradeStop extends Component {
       this.setState({ errorModal: true });
     else {
       const gpa = this.calculateGpa(gpaDropdowns, gpaInputs);
+      this.props.emitter.emit('showGpaResult', gpa);
       console.log(gpa);
     }
   }
@@ -112,6 +126,11 @@ class GradeStop extends Component {
     return Array.from(document.querySelectorAll('div.text'));
   }
 
+  showGpaResult(gpa) {
+    this.setState({ gpa });
+    this.props.history.push('/gpa/results');
+  }
+
   calculateGpa(dropdowns, inputs) {
     let totalGradePoints = 0;
     let totalCredits = 0;
@@ -123,7 +142,7 @@ class GradeStop extends Component {
       totalGradePoints += GPA_GRADE_WEIGHTS[grade] * credits;
       totalCredits += credits;
     }
-    return (totalGradePoints / totalCredits).toPrecision(3);
+    return parseFloat((totalGradePoints / totalCredits).toPrecision(3));
   }
 
   onTabClick(e, { name }) {
@@ -149,6 +168,7 @@ class GradeStop extends Component {
     this.props.emitter.addListener('submitGradeInputs', this.submitGradeInputs);
     this.props.emitter.addListener('submitGpaInputs', this.submitGpaInputs);
     this.props.emitter.addListener('switchView', this.switchView);
+    this.props.emitter.addListener('showGpaResult', this.showGpaResult);
   }
 
   render() {
