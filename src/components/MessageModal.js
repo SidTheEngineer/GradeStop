@@ -8,16 +8,21 @@ const styles = StyleSheet.create({
   modal: {
     animationName: fadeIn,
     animationDuration: '0.3s'
+  },
+  text: {
+    textAlign: 'center',
+    fontSize: '32',
+    '@media (min-width: 768px)': { fontSize: '40pt' }
   }
 });
 
 const MessageModal = props => (
   <Modal className={css(styles.modal)} basic open={ props.open } onClose={ props.onClose }>
     <Modal.Content>
-      <h1>{ props.message }</h1>
+      <h1 className={css(styles.text)}>{ props.message }</h1>
     </Modal.Content>
     <Modal.Actions>
-      <Button onClick={ props.onClose } size="medium" color={ COLORS.PRIMARY } inverted>
+      <Button onClick={ props.onClose } size="large" color={ COLORS.PRIMARY } inverted>
         OK
       </Button>
     </Modal.Actions>

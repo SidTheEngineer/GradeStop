@@ -11,6 +11,9 @@ import Controls from './Controls';
 
 const styles = StyleSheet.create({
   container: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'stretch',
     paddingTop: '80px',
     width: '80%',
     minHeight: '100%',
@@ -21,14 +24,19 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   segment: {
+    width: '100%',
     backgroundColor: COLORS.GRAY_2,
     margin: '0',
     animationName: pulse,
-    animationDuration: '0.35s'
+    animationDuration: '0.35s',
+    '@media (min-width: 1200px)': {
+      width: '70%',
+      alignSelf: 'center'
+    }
   }
 });
 
-class GradeView extends Component {
+class GPAInputView extends Component {
   componentWillUnmount() {
     this.props.emitter.emit('switchView', this.props.history.location.pathname);
   }
@@ -44,12 +52,12 @@ class GradeView extends Component {
           <Header as="h1" className={css(styles.header)}>
             { this.props.title }
           </Header>
-        { this.props.gradeInputs.map(i => i) }
+        { this.props.gpaInputs.map(i => i) }
         </Segment>
         <Controls activeTab={ this.props.activeTab } emitter={ this.props.emitter } />
       </Container>
     );
   }
-}
+};
 
-export default GradeView;
+export default GPAInputView;

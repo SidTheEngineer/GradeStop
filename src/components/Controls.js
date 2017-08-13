@@ -11,12 +11,22 @@ const styles = StyleSheet.create({
     height: '50px',
     position: 'fixed',
     bottom: '0px',
-    left: '0px'
+    left: '0px',
+    '@media (min-width: 768px)': {
+      flexDirection: 'column-reverse',
+      width: '70px',
+      height: '300px',
+      right: '80px',
+      bottom: '50%',
+      left: '90%',
+    }
   },
-
   button: {
     margin: '0',
-    borderRadius: '0'
+    borderRadius: '0',
+    '@media (min-width: 768px)': {
+      height: '100%'
+    }
   }
 });
 

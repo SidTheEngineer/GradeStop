@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import { StyleSheet, css } from 'aphrodite';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import _ from 'lodash';
-import GradeView from '../components/GradeView';
+import GradeInputView from '../components/GradeInputView';
 import GradeInput from '../components/GradeInput';
-import GPAView from '../components/GPAView';
+import GPAInputView from '../components/GPAInputView';
 import GPAInput from '../components/GPAInput';
 import NavMenu from '../components/NavMenu';
 import MessageModal from '../components/MessageModal';
+import ResultModal from '../components/ResultModal';
 import {
   COLORS,
   PLACEHOLDERS,
@@ -16,15 +17,9 @@ import {
   GPA_GRADE_WEIGHTS,
 } from '../constants';
 
-// TODO: Start working on a way to collect all of the data within the inputs
-// to calculate grade/GPA (on the backend?)
-
 // TODO: Error checking/input restriction throughout app.
 
 // TODO: Media queries for desktop view.
-
-// TODO: Try and find a way to preserve input state (this may come with setting
-// up RR4).
 
 const styles = StyleSheet.create({
   appContainer: {
@@ -40,14 +35,18 @@ const styles = StyleSheet.create({
 });
 
 class GradeStop extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
-      activeTab: TAB_NAMES.grade,
+      activeTab: props.location.pathname === "/"
+        ? TAB_NAMES.grade
+        : TAB_NAMES.gpa,
       gradeInputs: [<GradeInput key={ _.uniqueId('key:') } />],
       gpaInputs: [<GPAInput key={ _.uniqueId('key:') } />],
       errorModal: false,
+      gpaResultShowing: false,
+      gradeResultShowing: false,
       gpa: null,
       grade: null
     };
@@ -61,7 +60,9 @@ class GradeStop extends Component {
     this.submitGpaInputs = this.submitGpaInputs.bind(this);
     this.switchView = this.switchView.bind(this);
     this.closeErrorModal = this.closeErrorModal.bind(this);
+    this.closeResultModal = this.closeResultModal.bind(this);
     this.showGpaResult = this.showGpaResult.bind(this);
+    this.showGradeResult = this.showGradeResult.bind(this);
   }
 
   addGradeInput() {
@@ -85,7 +86,8 @@ class GradeStop extends Component {
     if (this.hasEmptyInputs(gradeInputs))
       this.setState({ errorModal: true });
     else {
-      console.log(gradeInputs);
+      const grade = this.calculateGrade(gradeInputs);
+      this.props.emitter.emit('showGradeResult', grade);
     }
   }
 
@@ -97,7 +99,6 @@ class GradeStop extends Component {
     else {
       const gpa = this.calculateGpa(gpaDropdowns, gpaInputs);
       this.props.emitter.emit('showGpaResult', gpa);
-      console.log(gpa);
     }
   }
 
@@ -127,8 +128,11 @@ class GradeStop extends Component {
   }
 
   showGpaResult(gpa) {
-    this.setState({ gpa });
-    this.props.history.push('/gpa/results');
+    this.setState({ gpa, gpaResultShowing: true });
+  }
+
+  showGradeResult(grade) {
+    this.setState({ grade, gradeResultShowing: true });
   }
 
   calculateGpa(dropdowns, inputs) {
@@ -137,12 +141,27 @@ class GradeStop extends Component {
 
     while (dropdowns.length !== 0 && inputs.length !== 0) {
       const grade = dropdowns.shift().textContent;
-      const credits = parseInt(inputs.shift().value, 10);
+      const credits = Number(inputs.shift().value);
 
       totalGradePoints += GPA_GRADE_WEIGHTS[grade] * credits;
       totalCredits += credits;
     }
-    return parseFloat((totalGradePoints / totalCredits).toPrecision(3));
+    return (totalGradePoints / totalCredits).toPrecision(3);
+  }
+
+  calculateGrade(inputs) {
+    let runningSum = 0;
+    let weightSum = 0;
+
+    while (inputs.length !== 0) {
+      const grade = Number(inputs.shift().value);
+      const weight = Number(inputs.shift().value);
+
+      runningSum += (grade * weight);
+      weightSum += weight;
+    }
+
+    return (runningSum / weightSum).toPrecision(3);
   }
 
   onTabClick(e, { name }) {
@@ -160,6 +179,13 @@ class GradeStop extends Component {
     this.setState({ errorModal: false });
   }
 
+  closeResultModal() {
+    this.setState({
+      gpaResultShowing: false,
+      gradeResultShowing: false
+    });
+  }
+
   componentWillMount() {
     this.props.emitter.addListener('addGradeInput', this.addGradeInput);
     this.props.emitter.addListener('removeGradeInput', this.removeGradeInput);
@@ -169,6 +195,7 @@ class GradeStop extends Component {
     this.props.emitter.addListener('submitGpaInputs', this.submitGpaInputs);
     this.props.emitter.addListener('switchView', this.switchView);
     this.props.emitter.addListener('showGpaResult', this.showGpaResult);
+    this.props.emitter.addListener('showGradeResult', this.showGradeResult);
   }
 
   render() {
@@ -182,6 +209,11 @@ class GradeStop extends Component {
           onClose={ this.closeErrorModal }
           message={ MESSAGES.emptyInputError }
         />
+        <ResultModal
+          open={ this.state.gpaResultShowing || this.state.gradeResultShowing }
+          onClose={ this.closeResultModal }
+          {...this.state}
+        />
         <NavMenu
           onTabClick={ this.onTabClick }
           activeTab={ activeTab }
@@ -190,7 +222,7 @@ class GradeStop extends Component {
           <Route exact path="/" render={
             routeProps => {
               return (
-                <GradeView
+                <GradeInputView
                   activeTab={ activeTab } 
                   emitter={ emitter } 
                   title={`Calculate ${ activeTab }`}
@@ -203,10 +235,10 @@ class GradeStop extends Component {
           <Route exact path="/gpa" render={
             routeProps => {
               return (
-                <GPAView 
-                  activeTab={ activeTab } 
+                <GPAInputView 
+                  activeTab={ TAB_NAMES.gpa } 
                   emitter={ emitter } 
-                  title={`Calculate ${ activeTab }`} 
+                  title={`Calculate ${ TAB_NAMES.gpa }`} 
                   gpaInputs={ gpaInputs }
                   { ...routeProps }
                 />
