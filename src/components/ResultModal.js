@@ -8,8 +8,8 @@ const styles = StyleSheet.create({
     animationName: fadeIn,
     animationDuration: '0.3s'
   },
-  title: { textAlign: 'center', fontSize: '40pt' },
-  text: { textAlign: 'center', fontSize: '64pt' }
+  title: { textAlign: 'center', fontSize: '32pt' },
+  text: { textAlign: 'center', fontSize: '48pt' }
 });
 
 const ResultModal = props => (
@@ -20,7 +20,7 @@ const ResultModal = props => (
     onClose={ props.onClose }
     size="small"
   >
-    <Modal.Content>
+    <Modal.Content onClick={ props.onClose }>
       <h2 className={css(styles.title)}>Your {
         props.gpaResultShowing
         ? 'GPA'

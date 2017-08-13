@@ -17,8 +17,13 @@ const styles = StyleSheet.create({
 });
 
 const MessageModal = props => (
-  <Modal className={css(styles.modal)} basic open={ props.open } onClose={ props.onClose }>
-    <Modal.Content>
+  <Modal
+    className={css(styles.modal)} 
+    basic 
+    open={ props.open } 
+    onClose={ props.onClose }
+  >
+    <Modal.Content onClick={ props.onClose }>
       <h1 className={css(styles.text)}>{ props.message }</h1>
     </Modal.Content>
     <Modal.Actions>
