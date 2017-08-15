@@ -4,7 +4,9 @@ html, body, #root, .App {
 
 *:focus { -webkit-appearance: none; }
 
-h1, h2, h3, input, .dropdown { font-family: 'Asap Condensed', sans-serif !important; }
+h1, h2, h3, input, .dropdown {
+  font-family: 'Asap Condensed', 'Trebuchet MS', sans-serif !important;
+}
 
 input[type=number], .dropdown {
   background-color: rgb(35, 35, 35) !important;
