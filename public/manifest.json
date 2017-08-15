@@ -4,7 +4,12 @@
   "icons": [
     {
       "src": "gs.png",
-      "sizes": "144x144",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "gs-512.png",
+      "sizes": "512x512",
       "type": "image/png"
     }
   ],
